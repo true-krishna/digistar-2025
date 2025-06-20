@@ -1,12 +1,78 @@
-# React + Vite
+# 📁 Digistar Cloud Class 1 Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Upload Page Screenshot](./public/screenshot.png)
+A modular React application built with **Vite** and structured using **Clean Architecture principles**. This app demonstrates a simple file upload UI, organized into `domain`, `application`, `infrastructure`, and `presentation` layers.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧱 Folder Structure
+```bash
+src/
+├── domain/
+│   └── fileEntity.js
+├── application/
+│   └── getFileIcon.js
+├── infrastructure/
+│   └── 
+├── presentation/
+│   ├── components/
+│   │   └── FileItem.js
+│   └── pages/
+│       └── UploadPage.js
+├── App.js
+└── main.jsx
+```
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 📁 Upload UI for file handling
+- 🧼 Clean Architecture separation (Domain, Application, Infrastructure, Presentation)
+- ⚡ Built with [Vite](https://vitejs.dev/) for fast dev experience
+- 🔧 Easily extendable and maintainable
+
+## ⚙️ Installation
+
+```bash
+# Clone the repository
+git clone https://github.co🔧 Project Architecture
+Domain – Pure business logic (e.g., fileEntity.js)
+
+Application – Use cases (e.g., getFileIcon.js)
+
+Infrastructure – Adapters for APIs, storage (currently empty)
+
+Presentation – Components and pages (FileItem, UploadPage)m/yourusername/vite-react-file-upload.git
+cd vite-react-file-upload
+
+# Install dependencies
+npm install
+```
+
+## 🧪 Run the App
+```bash
+npm run dev
+```
+
+## 🧭 Project Architecture
+
+This project follows the Clean Architecture pattern with a clear separation of concerns:
+
+- 🧠 **Domain** – Business entities and core logic  
+  &nbsp;&nbsp;&nbsp;&nbsp;`src/domain/fileEntity.js`
+
+- 🎯 **Application** – Use cases that implement business rules  
+  &nbsp;&nbsp;&nbsp;&nbsp;`src/application/getFileIcon.js`
+
+- 🌐 **Infrastructure** – External dependencies and integrations (e.g., APIs, storage)  
+  &nbsp;&nbsp;&nbsp;&nbsp;`src/infrastructure/`
+
+- 🎨 **Presentation** – UI layer with components and pages  
+  &nbsp;&nbsp;&nbsp;&nbsp;`src/presentation/components/FileItem.js`  
+  &nbsp;&nbsp;&nbsp;&nbsp;`src/presentation/pages/UploadPage.js`
+
+- 🏁 **Entry Point** – Root setup for the React application  
+  &nbsp;&nbsp;&nbsp;&nbsp;`App.js`, `main.jsx`
+
+## ✍️ Author
+
+Built by True Krishna
