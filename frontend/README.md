@@ -24,6 +24,7 @@ src/
 ├── App.js
 └── main.jsx
 ```
+---
 
 ## 🚀 Features
 
@@ -31,6 +32,8 @@ src/
 - 🧼 Clean Architecture separation (Domain, Application, Infrastructure, Presentation)
 - ⚡ Built with [Vite](https://vitejs.dev/) for fast dev experience
 - 🔧 Easily extendable and maintainable
+
+---
 
 ## ⚙️ Installation
 
@@ -50,10 +53,13 @@ cd vite-react-file-upload
 npm install
 ```
 
+---
+
 ## 🧪 Run the App
 ```bash
 npm run dev
 ```
+---
 
 ## 🧭 Project Architecture
 
@@ -74,6 +80,8 @@ This project follows the Clean Architecture pattern with a clear separation of c
 
 - 🏁 **Entry Point** – Root setup for the React application  
   &nbsp;&nbsp;&nbsp;&nbsp;`App.js`, `main.jsx`
+
+---
 
 ## ✍️ Author
 
