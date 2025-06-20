@@ -1,6 +1,8 @@
 # 📁 Digistar Cloud Class 1 Project
 
 ![Upload Page Screenshot](./public/screenshot.png)
+
+
 A modular React application built with **Vite** and structured using **Clean Architecture principles**. This app demonstrates a simple file upload UI, organized into `domain`, `application`, `infrastructure`, and `presentation` layers.
 
 ---
