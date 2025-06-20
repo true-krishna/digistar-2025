@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/document';
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/document`;
 
 export const getDocuments = async ({ pageParam = 0 }) => {
-  const res = await axios.get(`http://localhost:3000/api/document?skip=${pageParam}&limit=5`);
+  const res = await axios.get(`${API_URL}?skip=${pageParam}&limit=5`);
   return {
     data: res.data.data,
     total: res.data.pagination.total,
@@ -16,7 +16,7 @@ export const uploadDocument = async (file, onUploadProgress) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  const res = await axios.post('http://localhost:3000/api/document', formData, {
+  const res = await axios.post(${API_URL}, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     onUploadProgress,
   });
