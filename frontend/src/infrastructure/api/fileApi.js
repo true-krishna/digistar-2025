@@ -12,16 +12,16 @@ export const getDocuments = async ({ pageParam = 0 }) => {
   };
 };
 
-export const uploadDocument = async ({ file, onUploadProgress }) => {
+export const uploadDocument = async (file, onUploadProgress) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  const res = await axios.post(API_URL, formData, {
+  const res = await axios.post('http://localhost:3000/api/document', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     onUploadProgress,
   });
 
-  return res.data;
+  return res.data; // returns { message, document }
 };
 
 export const deleteDocument = async (id) => {

@@ -25,4 +25,20 @@ async function uploadToS3(file) {
   }
 }
 
-module.exports = { uploadToS3 };
+async function deleteFromS3(filename) {
+  const key = `uploads/${filename}`;
+  const params = {
+    Bucket: process.env.S3_BUCKET,
+    Key: key,
+  };
+
+  try {
+    await s3.deleteObject(params).promise();
+    return { message: 'File deleted from S3' };
+  } catch (error) {
+    console.error('S3 delete failed:', error);
+    throw new Error('Failed to delete file from S3');
+  }
+}
+
+module.exports = { uploadToS3, deleteFromS3 };

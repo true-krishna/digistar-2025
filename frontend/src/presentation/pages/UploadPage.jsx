@@ -9,9 +9,10 @@ import { FiInbox } from 'react-icons/fi';
 export const UploadPage = () => {
   const queryClient = useQueryClient();
   const containerRef = useRef();
-
   const [uploadingFiles, setUploadingFiles] = useState([]);
+  const [deletingId, setDeletingId] = useState(null);
 
+  // Get paginated documents from API
   const {
     data,
     fetchNextPage,
@@ -20,18 +21,26 @@ export const UploadPage = () => {
   } = useInfiniteQuery({
     queryKey: ['documents'],
     queryFn: fetchDocuments,
-    getNextPageParam: (lastPage) => {
-      return lastPage.hasMore ? lastPage.nextSkip : undefined;
-    },
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.nextSkip : undefined,
   });
 
+  // Handle file deletion
   const deleteMutation = useMutation({
     mutationFn: deleteDocument,
+    onMutate: (id) => {
+      setDeletingId(id);
+    },
     onSuccess: () => {
+      setDeletingId(null);
       queryClient.invalidateQueries(['documents']);
     },
-  });
+    onError: () => {
+      setDeletingId(null);
+    },
+  }); 
 
+  // Handle file upload
   const uploadMutation = useMutation({
     mutationFn: uploadDocument,
     onSuccess: (uploadedDoc) => {
@@ -39,7 +48,11 @@ export const UploadPage = () => {
         prev.map((f) =>
           f._id === uploadedDoc.tempId
             ? {
-                ...uploadedDoc,
+                _id: uploadedDoc._id,
+                name: uploadedDoc.name,
+                size: uploadedDoc.size,
+                uploadedAt: uploadedDoc.uploadedAt,
+                url: uploadedDoc.url,
                 status: 'completed',
                 progress: 100,
               }
@@ -47,22 +60,25 @@ export const UploadPage = () => {
         )
       );
     },
-    onError: (_, { tempId }) => {
+    onError: (error, { tempId }) => {
+      const message = error || 'Upload failed';
       setUploadingFiles((prev) =>
         prev.map((f) =>
-          f._id === tempId ? { ...f, status: 'failed' } : f
+          f._id === tempId
+            ? { ...f, status: 'failed', errorMessage: message }
+            : f
         )
       );
     },
   });
 
+  // Handle file select
   const handleUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const tempId = `temp-${Date.now()}`;
 
-    // Show file immediately with 0% progress
     setUploadingFiles((prev) => [
       {
         _id: tempId,
@@ -88,6 +104,7 @@ export const UploadPage = () => {
     });
   };
 
+  // Fetch more files on scroll
   const handleScroll = () => {
     const el = containerRef.current;
     if (!el || isFetchingNextPage || !hasNextPage) return;
@@ -97,7 +114,7 @@ export const UploadPage = () => {
     }
   };
 
-  // Merge API data and uploading files (remove duplicate _ids)
+  // Merge uploaded + API files without duplicates
   const seen = new Set();
   const apiFiles = (data?.pages.flatMap(p => p.data) || []).filter(file => {
     if (seen.has(file._id)) return false;
@@ -116,18 +133,18 @@ export const UploadPage = () => {
 
         <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-gray-500 mb-2">
           <p>
-            Drag and Drop or
             <label className="text-green-600 font-medium cursor-pointer">
               {" "}Browse
               <input
                 type="file"
                 className="hidden"
                 onChange={handleUpload}
+                accept=".xls,.xlsx,.csv,.doc,.docx,.ppt,.pptx,.pdf"
               />
             </label>
-            to Upload
+            {" "} file to Upload
           </p>
-          <p className="text-sm text-gray-400">Support formats: csv, xls, xlsx</p>
+          <p className="text-sm text-gray-400">Support formats: csv, xls, xlsx, docx, pdf</p>
         </div>
 
         <div
@@ -148,10 +165,23 @@ export const UploadPage = () => {
                 key={file._id}
                 name={file.name}
                 size={(file.size / 1000).toFixed(1) + ' KB'}
-                date={file.uploadedAt ? new Date(file.uploadedAt).toLocaleString() : 'Just now'}
+                date={
+                  file.uploadedAt
+                    ? new Date(file.uploadedAt).toLocaleString()
+                    : 'Just now'
+                }
                 status={file.status || 'completed'}
                 progress={file.progress || 0}
-                onDelete={() => deleteMutation.mutate(file._id)}
+                errorMessage={file.errorMessage}
+                onDelete={() => {
+                  if (file.status === 'uploading' || file.status === 'failed') {
+                    // Local delete only
+                    setUploadingFiles((prev) => prev.filter((f) => f._id !== file._id));
+                  } else {
+                    deleteMutation.mutate(file._id);
+                  }
+                }}
+                isDeleting={deletingId === file._id}
               />
             ))
           )}

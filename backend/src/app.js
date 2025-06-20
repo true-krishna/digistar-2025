@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const documentRoutes = require('./interfaces/routes/document');
 const healthRoutes = require('./interfaces/routes/health');
@@ -7,6 +8,7 @@ const { connectToDatabase } = require('./infrastructure/db/mongoose');
 dotenv.config();
 
 const app = express();
+app.use(cors())
 // Init DB
 //
 connectToDatabase(process.env.MONGO_URI);
