@@ -1,4 +1,4 @@
-# ✅ Deployment Checklist for Fullstack App on EC2
+# Deployment Checklist for Fullstack App on EC2
 
 | Task                                      | Done |
 | ----------------------------------------- | ----- |
@@ -13,9 +13,7 @@
 
 ## Launch EC2 Instance
 Launch an EC2 Instance
-```bash
-ssh -i /path/key.pem ubuntu@ec2-ip
-```
+
 ## S3 bucket created and configured
 1. Create a S3 bucket
 2. Contact your administrator to get access_id & access_key
