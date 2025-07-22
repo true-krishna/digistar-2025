@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const documentRoutes = require('./interfaces/routes/document');
 const healthRoutes = require('./interfaces/routes/health');
 const { connectToDatabase } = require('./infrastructure/db/mongoose');
+const requestLogger = require('./interfaces/middleware/logger');
 
 dotenv.config();
 
@@ -11,12 +12,13 @@ const app = express();
 app.use(cors())
 // Init DB
 //
-connectToDatabase(process.env.MONGO_URI);
+//connectToDatabase(process.env.MONGO_URI);
 
 
 
 // Middlewares
 app.use(express.json());
+app.use(requestLogger);
 
 // Routes
 app.use('/api/document', documentRoutes);
