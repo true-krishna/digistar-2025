@@ -12,7 +12,7 @@ const app = express();
 app.use(cors())
 // Init DB
 //
-//connectToDatabase(process.env.MONGO_URI);
+connectToDatabase(process.env.MONGO_URI);
 
 
 
